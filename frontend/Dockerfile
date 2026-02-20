@@ -1,19 +1,16 @@
-# Build Stage
-FROM node:18-alpine as build
+FROM node:20-alpine
 
+# Set working directory
 WORKDIR /app
 
+# Install dependencies
 COPY package*.json ./
 RUN npm install
 
+# Copy project files
 COPY . .
-RUN npm run build
 
-# Production Stage
-FROM nginx:alpine
+EXPOSE 5173
 
-COPY --from=build /app/dist /usr/share/nginx/html
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+# Start in development mode
+CMD ["npm", "run", "dev", "--", "--host"]

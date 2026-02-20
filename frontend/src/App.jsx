@@ -4,7 +4,11 @@ import UploadArea from './components/UploadArea';
 import ControlPanel from './components/ControlPanel';
 import { Download, AlertCircle, CheckCircle } from 'lucide-react';
 
-const API_BASE = '/api';
+// Read API base from Vite environment variable
+const API_BASE = import.meta.env.VITE_API_BASE;
+
+// Extract origin only (removes trailing /api if present)
+const API_ORIGIN = API_BASE.replace(/\/api$/, '');
 
 function App() {
   const [file, setFile] = useState(null);
@@ -31,6 +35,7 @@ function App() {
       const res = await axios.post(`${API_BASE}/upload`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
+
       setUploadedFilename(res.data.filename);
     } catch (err) {
       console.error(err);
@@ -40,6 +45,7 @@ function App() {
 
   const handleProcess = async () => {
     if (!uploadedFilename) return;
+
     setIsProcessing(true);
     setError(null);
     setDownloadLinks([]);
@@ -54,6 +60,7 @@ function App() {
         password: password,
         reverse_order: reverseOrder
       });
+
       setDownloadLinks(res.data.files);
     } catch (err) {
       console.error(err);
@@ -69,7 +76,9 @@ function App() {
         <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400 mb-2">
           DoubleSide
         </h1>
-        <p className="text-gray-400">Advanced printing tools for single-sided printers</p>
+        <p className="text-gray-400">
+          Advanced printing tools for single-sided printers
+        </p>
       </header>
 
       <main className="max-w-4xl mx-auto">
@@ -104,25 +113,38 @@ function App() {
           <div className="mt-8 glass-panel animate-fade-in">
             <div className="flex items-center gap-2 mb-6 text-green-400">
               <CheckCircle size={24} />
-              <h2 className="text-xl font-bold">Processing Complete!</h2>
+              <h2 className="text-xl font-bold">
+                Processing Complete!
+              </h2>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {downloadLinks.map((linkObj, index) => {
-                // Handle both old format (string) and new format (object) for backward compatibility if needed
-                const url = typeof linkObj === 'string' ? linkObj : linkObj.url;
-                const name = typeof linkObj === 'string' ? linkObj.split('/').pop() : linkObj.name;
+                const url =
+                  typeof linkObj === 'string'
+                    ? linkObj
+                    : linkObj.url;
+
+                const name =
+                  typeof linkObj === 'string'
+                    ? linkObj.split('/').pop()
+                    : linkObj.name;
 
                 return (
                   <a
                     key={index}
-                    href={url}
+                    href={`${API_ORIGIN}${url}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-between p-4 bg-slate-800/50 rounded-lg border border-slate-700 hover:bg-slate-800 hover:border-blue-500 transition-all group"
                   >
-                    <span className="font-mono text-sm truncate mr-4">{name}</span>
-                    <Download size={20} className="text-blue-400 group-hover:scale-110 transition-transform" />
+                    <span className="font-mono text-sm truncate mr-4">
+                      {name}
+                    </span>
+                    <Download
+                      size={20}
+                      className="text-blue-400 group-hover:scale-110 transition-transform"
+                    />
                   </a>
                 );
               })}

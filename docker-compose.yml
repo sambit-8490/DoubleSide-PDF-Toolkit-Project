@@ -3,6 +3,7 @@ version: '3.8'
 services:
   backend:
     build: ./backend
+    container_name: doubleside_backend
     ports:
       - "8000:8000"
     volumes:
@@ -11,8 +12,11 @@ services:
 
   frontend:
     build: ./frontend
+    container_name: doubleside_frontend
     ports:
-      - "80:80"
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE=http://localhost:8000/api
     depends_on:
       - backend
     restart: always
