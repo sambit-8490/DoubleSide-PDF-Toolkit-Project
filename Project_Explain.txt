@@ -1,0 +1,285 @@
+# DoubleSide
+
+**Advanced printing tools for single-sided printers**
+
+DoubleSide helps you prepare PDF files for manual duplex printing, booklet creation, page extraction, and PDF security operations.
+
+---
+
+## 🚀 Features
+
+* Split PDFs into odd/even pages
+* 2-in-1 (N-up) layout
+* Booklet arrangement
+* Extract page ranges
+* Remove or add PDF passwords
+* Docker-ready
+* Fast processing via PyMuPDF
+
+---
+
+## 🧠 How DoubleSide Works
+
+DoubleSide prepares your PDF so you can print correctly on a **single-sided printer**.
+
+### Manual duplex concept
+
+![Image](https://brothercanadaen.custhelp.com/euf/assets/images/answers/images/NC/138058/05.jpg)
+
+![Image](https://brothercanadaen.custhelp.com/euf/assets/images/answers/images/NC/138058/06.jpg)
+
+**Workflow:**
+
+1. Print first generated file
+2. Flip the paper stack
+3. Print the second file
+
+---
+
+## 📂 File Upload
+
+* Upload via drag & drop
+* Only **.pdf** allowed
+* Stored temporarily
+* Auto-clean after 10 minutes
+
+---
+
+# ⚙️ Processing Modes
+
+---
+
+## 1️⃣ Double Sided (Odd/Even)
+
+Splits PDF into:
+
+* File 1 → odd pages (front)
+* File 2 → even pages (back)
+
+**Best for:** manual duplex printing.
+
+### Printing flow
+
+![Image](https://content.instructables.com/F0R/S9DM/H82UNH0L/F0RS9DMH82UNH0L.jpg)
+
+}
+
+**Steps:**
+
+1. Print file 1
+2. Flip pages
+3. Print file 2
+
+---
+
+## 2️⃣ 2-in-1 (N-up)
+
+Places **2 pages on 1 A4 landscape sheet**.
+
+**Best for:**
+
+* saving paper
+* handouts
+* notes
+
+---
+
+## 3️⃣ Booklet
+
+Reorders pages for folding into a booklet.
+
+**Best for:**
+
+* pamphlets
+* mini books
+* folded documents
+
+✔ Automatically pads pages to multiples of 4.
+
+---
+
+## 4️⃣ Split / Extract
+
+Extracts a page range into a new PDF.
+
+### Example
+
+```
+Start Page = 5  
+End Page = 10
+```
+
+➡ Output contains pages 5–10
+
+---
+
+## 5️⃣ Decrypt
+
+Removes password protection.
+
+**Requirement:** you must know the password.
+
+---
+
+## 6️⃣ Encrypt
+
+Adds AES-256 password protection.
+
+**Use cases:**
+
+* secure sharing
+* document protection
+
+---
+
+# 🔢 Page Settings
+
+---
+
+## Start Page
+
+Defines where processing begins.
+
+Example:
+
+```
+Start Page: 1
+```
+
+---
+
+## End Page (0 for all)
+
+**Rules:**
+
+* `0` → process entire document
+* number → stop at that page
+
+### Examples
+
+| Start | End | Result        |
+| ----- | --- | ------------- |
+| 1     | 0   | full document |
+| 5     | 10  | pages 5–10    |
+| 3     | 3   | only page 3   |
+
+---
+
+# 🔄 Upside Down Printer (Face-Up Output)
+
+This fixes orientation for printers that output paper face-up.
+
+## ✅ Enable if printer:
+
+* outputs face-up
+* most inkjets
+
+## ❌ Disable if printer:
+
+* outputs face-down
+* most laser printers
+
+⚠️ If wrong, back pages print upside down.
+
+---
+
+# 🐳 Docker Setup
+
+## Requirements
+
+* Docker
+* Docker Compose
+
+---
+
+## Run
+
+```bash
+docker compose up --build
+```
+
+---
+
+## Services
+
+### Frontend
+
+* Port: **5173**
+* 
+
+### Backend
+
+* Port: **8000**
+* FastAPI + Uvicorn
+* Handles PDF processing
+
+---
+
+# 🌐 Environment Variables
+
+Frontend:
+
+```
+VITE_API_BASE=/api
+```
+
+---
+
+# 🧹 Automatic Cleanup
+
+Backend deletes temp files older than **10 minutes**.
+
+---
+
+# ✅ Supported Workflows
+
+* manual duplex printing
+* paper-saving layouts
+* booklet creation
+* secure PDF handling
+* partial extraction
+
+---
+
+# ⚠️ Limitations
+
+* Only PDF supported
+* Very large PDFs take longer
+* Printer flip direction must be tested once
+
+---
+
+# 🛠 Tech Stack
+
+**Frontend**
+
+* React
+* Vite
+* Tailwind
+* Axios
+
+**Backend**
+
+* FastAPI
+* PyMuPDF
+* Uvicorn
+
+**Infra**
+
+* Docker
+* Nginx
+
+---
+
+# 📌 Status
+
+✅ Upload working
+✅ Processing stable
+✅ Dynamic outputs supported
+✅ Docker ready
+
+---
+
+# 📄 License
+
+Free to use and modify.
